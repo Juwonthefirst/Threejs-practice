@@ -20,7 +20,7 @@ scene.add(mesh)
  * Sizes
  */
 const sizes = {
-    width: 800,
+    width: 300,
     height: 600
 }
 
