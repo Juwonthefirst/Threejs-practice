@@ -1,7 +1,7 @@
-/*import './style.css'
-import * as THREE from 'three'*/
+import './style.css'
+import * as THREE from 'three'
 
-import * as THREE from '../../cdn_modules/three.js@0.174.0/three.module.js'
+//import * as THREE from '../../cdn_modules/three.js@0.174.0/three.module.js'
 /**
  * Base
  */
