@@ -10,6 +10,7 @@ const touchCoordinates = {
     x: 0,
     y: 0
 }
+
 window.addEventListener('touchmove', (event) => {
     const touch = event.touches[0]
     touchCoordinates.x = touch.clientX / sizes.width - 0.5
@@ -70,8 +71,10 @@ const tick = () =>
     // Update objects
     mesh.rotation.y = elapsedTime;*/
     
-    camera.position.x = touchCoordinates.x * -5
-    camera.position.y = touchCoordinates.y * 5
+    camera.position.x = Math.sin(touchCoordinates.x * Math.PI * 2) * 5
+    camera.position.z = Math.cos(touchCoordinates.x * Math.PI * 2) * 5
+    camera.position.y = Math.sin(touchCoordinates.y * Math.PI * 2) * 5
+    camera.lookAt(mesh.position)
     // Render
     renderer.render(scene, camera)
     
