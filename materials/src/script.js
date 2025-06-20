@@ -93,6 +93,7 @@ const material = new THREE.MeshStandardMaterial()
 material.roughness = 0.2
 material.metalness = 0.7
 material.envMap = environmentMap
+material.side = THREE.DoubleSide
 /*material.map = doorColor
 material.alphaMap = doorAlpha
 material.aoMap = doorAmbientOcclusion
@@ -109,6 +110,7 @@ gui.add(material, 'roughness').min(0).max(1).step(0.001)
 gui.add(material, 'metalness').min(0).max(1).step(0.001)
 gui.add(material, 'aoMapIntensity').min(0).max(10).step(0.001)
 gui.add(material, 'displacementScale').min(0).max(1).step(0.00001)
+
 const sphere = new THREE.Mesh(
 	new THREE.SphereGeometry(0.5, 64, 64),
 	material
@@ -146,7 +148,7 @@ pointLight.position.y = 0.062
 pointLight.position.z = 2
 //scene.add(pointLight)
 const helper = new THREE.PointLightHelper(pointLight)
-scene.add(helper)
+//scene.add(helper)
 gui.add(pointLight.position, 'x').min(-3).max(10)
 gui.add(pointLight.position, 'y').min(-3).max(10)
 gui.add(pointLight.position, 'z').min(-3).max(100)

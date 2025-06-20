@@ -70,6 +70,7 @@ const cube = new THREE.Mesh(
     new THREE.BoxGeometry(1, 1, 1),
     new THREE.MeshBasicMaterial()
 )
+
 const shape = Math.random()
 const randomShape = shape < 0.5? new THREE.TorusGeometry(0.3, 0.2, 20, 45) : new THREE.BoxGeometry(1, 1, 1, 16, 16)
 //scene.add(cube)
