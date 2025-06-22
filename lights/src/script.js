@@ -1,14 +1,14 @@
-import './style.css'
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'lil-gui'
+
+import * as THREE from '../../modules/three.module.js'
+import { OrbitControls } from '../../modules/orbit_controls.js'
+import GUI from '../../modules/lil-gui.js'
 
 /**
  * Base
  */
 // Debug
-const gui = new dat.GUI()
-
+const gui = new GUI()
+gui.close()
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -19,20 +19,41 @@ const scene = new THREE.Scene()
  * Lights
  */
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+gui.add(ambientLight, 'intensity').min(0).max(4).step(0.01)
+gui.addColor(ambientLight, 'color')
 scene.add(ambientLight)
 
-const pointLight = new THREE.PointLight(0xffffff, 0.5)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
+const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.3)
+directionalLight.position.set(1, 0.25, 0)
+gui.add(directionalLight, 'intensity').min(0).max(10).step(0.01)
+gui.addColor(directionalLight, 'color')
+scene.add(directionalLight)
+
+const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff, 0.8)
+scene.add(hemisphereLight)
+
+const pointLight = new THREE.PointLight(0xff9000, 0.5, 5)
+pointLight.position.set(1, -0.5, 1)
 scene.add(pointLight)
 
-/**
+const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 10, 1, 1)
+rectAreaLight.position.z = 1
+scene.add(rectAreaLight)
+
+const spotLight = new THREE.SpotLight(0x78ff00, 10, 10, Math.PI * 0.1, 0.25, 1)
+
+spotLight.position.set(0, 2, 3)
+scene.add(spotLight)
+
+const spotLightHelper = new THREE.SpotLightHelper(spotLight)
+scene.add(spotLightHelper)
+
+ /**
  * Objects
  */
 // Material
 const material = new THREE.MeshStandardMaterial()
-material.roughness = 0.4
+material.roughness = 0.3
 
 // Objects
 const sphere = new THREE.Mesh(
@@ -53,7 +74,7 @@ const torus = new THREE.Mesh(
 torus.position.x = 1.5
 
 const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(5, 5),
+    new THREE.PlaneGeometry(500, 500),
     material
 )
 plane.rotation.x = - Math.PI * 0.5
@@ -106,6 +127,7 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.shadowMap.enabled = true
 
 /**
  * Animate
