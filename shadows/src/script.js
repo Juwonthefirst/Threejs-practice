@@ -16,7 +16,8 @@ const scene = new THREE.Scene()
 
 //Texture
 const textureLoader = new THREE.TextureLoader()
-const shadowTexture = textureLoader.load('/shadows/static/textures/bakedShadow.jpg')
+const bakedShadowTexture = textureLoader.load('/shadows/static/textures/bakedShadow.jpg')
+const basicShadowTexture = textureLoader.load('/shadows/static/textures/simpleShadow.jpg')
 
 /**
  * Lights
@@ -93,7 +94,17 @@ plane.receiveShadow = true
 plane.rotation.x = - Math.PI * 0.5
 plane.position.y = - 0.5
 
-scene.add(sphere, plane)
+const shadowPlane = new THREE.Mesh(
+    new THREE.PlaneGeometry(1, 1),
+    new THREE.MeshBasicMaterial({
+    	color: 0x000000,
+    	transparent: true,
+    	alphaMap: basicShadowTexture
+    })
+)
+shadowPlane.rotation.x = -Math.PI * 0.5
+shadowPlane.position.y = plane.position.y + 0.001
+scene.add(sphere, shadowPlane, plane)
 
 /**
  * Sizes
@@ -108,6 +119,7 @@ window.addEventListener('resize', () =>
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
+	
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
@@ -153,7 +165,15 @@ const tick = () =>
 
     // Update controls
     controls.update()
-
+	//bouncing ball
+	sphere.position.x = Math.cos(elapsedTime) * 1.5
+	sphere.position.y = Math.abs(Math.sin(elapsedTime * 3) * 1.5)
+	sphere.position.z = Math.sin(elapsedTime) * 1.5
+	
+	//update shadow
+	shadowPlane.position.x = sphere.position.x
+	shadowPlane.position.z = sphere.position.z
+	shadowPlane.material.opacity = ((1 - sphere.position.y) * 0.5) + 0.5
     // Render
     renderer.render(scene, camera)
 
