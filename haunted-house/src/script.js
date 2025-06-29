@@ -82,12 +82,13 @@ const walls = new THREE.Mesh(
 		map: wallColorTexture,
 		aoMap: wallAmbientOcculsionTexture,
 		normalMap: wallNormalTexture,
-		roughnessMap: wallRoughnessTexture
+		roughnessMap: wallRoughnessTexture,
+		side: THREE.DoubleSide
 	})
 )
 
 walls.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(walls.geometry.attributes.uv.array, 2))
-walls.position.y = 2.5 / 2
+walls.position.y = (2.5 / 2) + 0.001
 house.add(walls)
 
 //Roof
@@ -95,7 +96,7 @@ const roof = new THREE.Mesh(
 	new THREE.ConeGeometry(3.5, 1, 4),
 	new THREE.MeshStandardMaterial({ color: '#b35f45' })
 )
-roof.position.y = 2.5 + 0.5
+roof.position.y = 2.5 + 0.5 + 0.002
 roof.rotation.y = Math.PI * 0.25
 house.add(roof)
 
@@ -191,7 +192,6 @@ const floor = new THREE.Mesh(
 
 floor.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(floor.geometry.attributes.uv.array))
 floor.rotation.x = -Math.PI * 0.5
-floor.position.y = 0
 scene.add(floor)
 
 /**
@@ -216,6 +216,15 @@ scene.add(moonLight)
 const doorLight = new THREE.PointLight('#ff7d46', 5, 7)
 doorLight.position.set(0, 2.2, 2.7)
 house.add(doorLight)
+
+const doorLightHelper = new THREE.PointLightHelper(doorLight)
+scene.add(doorLightHelper)
+
+const houseLight = new THREE.PointLight('#ff7d46', 3, 3)
+houseLight.position.y = 2
+house.add(houseLight)
+
+
 /**
  * Sizes
  */
